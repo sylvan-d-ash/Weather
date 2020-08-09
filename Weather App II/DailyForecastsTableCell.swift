@@ -37,10 +37,13 @@ private extension DailyForecastsTableCell {
 
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 20, left: 10, bottom: 10, right: 10)
-        layout.itemSize = CGSize(width: 60, height: 160)
+        layout.itemSize = CGSize(width: 60, height: 90)
+        layout.scrollDirection = .horizontal
 
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
+        collectionView.dataSource = self
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView.register(ForecastCollectionCell.self, forCellWithReuseIdentifier: "\(ForecastCollectionCell.self)")
         contentView.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
