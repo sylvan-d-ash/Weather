@@ -21,13 +21,15 @@ private enum DataSource {
 
 class ViewController: UITableViewController {
     private let webService: WebServiceProtocol
+    private let cacheService: WebServiceProtocol
     private var location: String?
     private var forecastsByDay: [[Forecast]] = []
     private var sourceButton: UIBarButtonItem!
     private var dataSource: DataSource = .web
 
-    init(webService: WebServiceProtocol = WebService()) {
+    init(webService: WebServiceProtocol = WebService(), cacheService: WebServiceProtocol = CacheService()) {
         self.webService = webService
+        self.cacheService = cacheService
         super.init(nibName: nil, bundle: nil)
         setupSubviews()
     }
@@ -112,7 +114,13 @@ private extension ViewController {
         forecastsByDay = []
         tableView.reloadData()
 
-        webService.fetchForecast(location: location) { [weak self] result in
+        let dataService: WebServiceProtocol
+        switch dataSource {
+            case .cache: dataService = cacheService
+            case .web: dataService = webService
+        }
+
+        dataService.fetchForecast(location: location) { [weak self] result in
             self?.processForecast(result: result)
         }
     }
