@@ -34,6 +34,9 @@ private extension ForecastCollectionCell {
             $0.textAlignment = .center
         }
 
+        contentView.layer.borderColor = UIColor.gray.cgColor
+        contentView.layer.borderWidth = 1
+
         let stackview = UIStackView(arrangedSubviews: [timeLabel, iconImageView, tempLabel])
         stackview.axis = .vertical
         stackview.spacing = 10
