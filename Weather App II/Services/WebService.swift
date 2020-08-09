@@ -8,11 +8,11 @@
 
 import Foundation
 
-protocol WebServiceProtocol: AnyObject {
+protocol DataServiceProtocol: AnyObject {
     func fetchForecast(location: String?, completion: @escaping (Result<[Forecast], Error>) -> Void)
 }
 
-class WebService: WebServiceProtocol {
+class WebService: DataServiceProtocol {
     func fetchForecast(location: String?, completion: @escaping (Result<[Forecast], Error>) -> Void) {
         guard let location = location, let url = buildQueryURL(location: location) else { return }
 
