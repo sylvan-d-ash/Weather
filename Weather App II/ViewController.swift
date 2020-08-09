@@ -22,7 +22,6 @@ private enum DataSource {
 class ViewController: UITableViewController {
     private let webService: WebServiceProtocol
     private let cacheService: WebServiceProtocol
-    private var location: String?
     private var forecastsByDay: [[Forecast]] = []
     private var sourceButton: UIBarButtonItem!
     private var dataSource: DataSource = .web
@@ -100,24 +99,24 @@ private extension ViewController {
         }
 
         sourceButton.title = "Source: \(dataSource.description)"
-        fetchForecasts()
+        fetchForecasts(location: nil)
     }
 
     func didSpecifyLocation(_ location: String?) {
-        guard let location = location else { return }
-        self.location = location
-        fetchForecasts()
+        fetchForecasts(location: location)
     }
 
-    func fetchForecasts() {
-        guard let location = location else { return }
+    func fetchForecasts(location: String?) {
         forecastsByDay = []
         tableView.reloadData()
 
         let dataService: WebServiceProtocol
         switch dataSource {
-            case .cache: dataService = cacheService
-            case .web: dataService = webService
+            case .cache:
+                dataService = cacheService
+            case .web:
+                guard let location = location, !location.isEmpty else { return }
+                dataService = webService
         }
 
         dataService.fetchForecast(location: location) { [weak self] result in

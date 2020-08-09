@@ -9,12 +9,12 @@
 import Foundation
 
 protocol WebServiceProtocol: AnyObject {
-    func fetchForecast(location: String, completion: @escaping (Result<[Forecast], Error>) -> Void)
+    func fetchForecast(location: String?, completion: @escaping (Result<[Forecast], Error>) -> Void)
 }
 
 class WebService: WebServiceProtocol {
-    func fetchForecast(location: String, completion: @escaping (Result<[Forecast], Error>) -> Void) {
-        guard let url = buildQueryURL(location: location) else { return }
+    func fetchForecast(location: String?, completion: @escaping (Result<[Forecast], Error>) -> Void) {
+        guard let location = location, let url = buildQueryURL(location: location) else { return }
 
         URLSession.shared.dataTask(with: url) { (dataOrNil, responseOrNil, errorOrNil) in
             if let error = errorOrNil {

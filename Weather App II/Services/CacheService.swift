@@ -13,7 +13,7 @@ enum CacheError: Error {
 }
 
 class CacheService: WebServiceProtocol {
-    func fetchForecast(location: String, completion: @escaping (Result<[Forecast], Error>) -> Void) {
+    func fetchForecast(location: String?, completion: @escaping (Result<[Forecast], Error>) -> Void) {
         guard let url = Bundle.main.url(forResource: "forecast", withExtension: "json") else {
             completion(.failure(CacheError.noCache))
             return
