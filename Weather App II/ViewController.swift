@@ -11,6 +11,7 @@ import UIKit
 class ViewController: UITableViewController {
     private let webService: WebServiceProtocol
     private var location: String?
+    private var dailyForecasts: [String: [Forecast]] = [:]
 
     init(webService: WebServiceProtocol = WebService()) {
         self.webService = webService
@@ -62,12 +63,45 @@ private extension ViewController {
         self.location = location
 
         webService.fetchForecast(location: location) { [weak self] result in
-            switch result {
-            case .failure(let error):
-                print(error.localizedDescription)
-            case .success(let forecasts):
-                print(forecasts)
-            }
+            self?.processForecast(result: result)
         }
+    }
+
+    func processForecast(result: Result<[Forecast], Error>) {
+        switch result {
+        case .failure(let error):
+            showError(message: error.localizedDescription)
+
+        case .success(let forecasts):
+            var date = Date()
+            var dailyForecasts: [String: [Forecast]] = [:]
+            var dayForecast: [Forecast] = []
+            for forecast in forecasts {
+                if Calendar.current.isDate(forecast.time, inSameDayAs: date) {
+                    dayForecast.append(forecast)
+                } else {
+                    dailyForecasts[date.toString] = dayForecast
+                    dayForecast = [forecast]
+                    date = forecast.time
+                }
+            }
+            dailyForecasts[date.toString] = dayForecast
+            self.dailyForecasts = dailyForecasts
+            self.tableView.reloadData()
+        }
+    }
+
+    func showError(message: String) {
+        let controller = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        controller.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        present(controller, animated: true, completion: nil)
+    }
+}
+
+private extension Date {
+    var toString: String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        return formatter.string(from: self)
     }
 }
