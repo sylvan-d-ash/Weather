@@ -36,9 +36,9 @@ private extension DailyForecastsTableCell {
         selectionStyle = .none
 
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 20, left: 10, bottom: 10, right: 10)
-        layout.itemSize = CGSize(width: 60, height: 90)
         layout.scrollDirection = .horizontal
+        layout.minimumInteritemSpacing = Dimensions.spacing
+        layout.itemSize = CGSize(width: 50, height: 90)
 
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear

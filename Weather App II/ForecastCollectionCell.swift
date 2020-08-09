@@ -34,8 +34,6 @@ private extension ForecastCollectionCell {
             $0.textAlignment = .center
         }
 
-        backgroundColor = .orange
-
         let stackview = UIStackView(arrangedSubviews: [timeLabel, iconImageView, tempLabel])
         stackview.axis = .vertical
         stackview.spacing = 10
@@ -43,7 +41,7 @@ private extension ForecastCollectionCell {
         stackview.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             stackview.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            stackview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            stackview.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             stackview.topAnchor.constraint(equalTo: contentView.topAnchor),
             stackview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
