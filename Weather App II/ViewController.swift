@@ -11,7 +11,7 @@ import UIKit
 class ViewController: UITableViewController {
     private let webService: WebServiceProtocol
     private var location: String?
-    private var dailyForecasts: [[Forecast]] = []
+    private var forecastsByDay: [[Forecast]] = []
 
     init(webService: WebServiceProtocol = WebService()) {
         self.webService = webService
@@ -24,7 +24,7 @@ class ViewController: UITableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return dailyForecasts.count
+        return forecastsByDay.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -32,7 +32,7 @@ class ViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let forecasts = dailyForecasts[section]
+        let forecasts = forecastsByDay[section]
         guard let first = forecasts.first else { print("no header"); return nil }
         return first.time.toString
     }
@@ -42,7 +42,7 @@ class ViewController: UITableViewController {
             return UITableViewCell()
         }
 
-        let forecasts = dailyForecasts[indexPath.section]
+        let forecasts = forecastsByDay[indexPath.section]
         cell.load(content: forecasts)
 
         return cell
@@ -88,23 +88,23 @@ private extension ViewController {
         case .failure(let error):
             showError(message: error.localizedDescription)
 
-        case .success(let forecasts):
+        case .success(let allForecasts):
             var date = Date()
-            var dailyForecasts: [[Forecast]] = []
-            var dayForecast: [Forecast] = []
-            for forecast in forecasts {
+            var forecasts: [[Forecast]] = []
+            var forecastsForDay: [Forecast] = []
+            for forecast in allForecasts {
                 if Calendar.current.isDate(forecast.time, inSameDayAs: date) {
-                    dayForecast.append(forecast)
+                    forecastsForDay.append(forecast)
                 } else {
-                    if dayForecast.count > 0 {
-                        dailyForecasts.append(dayForecast)
+                    if forecastsForDay.count > 0 {
+                        forecasts.append(forecastsForDay)
                     }
-                    dayForecast = [forecast]
+                    forecastsForDay = [forecast]
                     date = forecast.time
                 }
             }
-            dailyForecasts.append(dayForecast)
-            self.dailyForecasts = dailyForecasts
+            forecasts.append(forecastsForDay)
+            self.forecastsByDay = forecasts
 
             DispatchQueue.main.async {
                 self.tableView.reloadData()
