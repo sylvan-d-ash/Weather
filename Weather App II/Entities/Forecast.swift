@@ -19,8 +19,7 @@ struct Forecast: Decodable {
         let id: Int
     }
 
-    var high: Double = 0
-    var low: Double = 0
+    var temp: Double = 0
     var time: Date = Date()
     let weather: [Weather]
 
@@ -30,8 +29,6 @@ struct Forecast: Decodable {
 
         enum MainKeys: String, CodingKey {
             case temp
-            case minTemp = "temp_min"
-            case maxTemp = "temp_max"
         }
     }
 }
@@ -42,8 +39,7 @@ extension Forecast {
         weather = try container.decode([Forecast.Weather].self, forKey: .weather)
 
         let mainContainer = try container.nestedContainer(keyedBy: CodingKeys.MainKeys.self, forKey: .main)
-        high = try mainContainer.decode(Double.self, forKey: .maxTemp)
-        low = try mainContainer.decode(Double.self, forKey: .minTemp)
+        temp = try mainContainer.decode(Double.self, forKey: .temp)
 
         let datetime = try container.decode(Int.self, forKey: .time)
         time = Date(timeIntervalSince1970: TimeInterval(datetime))
