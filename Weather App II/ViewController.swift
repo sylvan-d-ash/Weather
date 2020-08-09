@@ -11,36 +11,52 @@ import UIKit
 class ViewController: UITableViewController {
     private let webService: WebServiceProtocol
     private var location: String?
-    private var dailyForecasts: [String: [Forecast]] = [:]
+    private var dailyForecasts: [[Forecast]] = []
 
     init(webService: WebServiceProtocol = WebService()) {
         self.webService = webService
         super.init(nibName: nil, bundle: nil)
-        setupNavbar()
+        setupSubviews()
     }
 
     required init?(coder: NSCoder) {
-        webService = WebService()
-        super.init(coder: coder)
-        setupNavbar()
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 0
+        return dailyForecasts.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return 1
+    }
+
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let forecasts = dailyForecasts[section]
+        guard let first = forecasts.first else { print("no header"); return nil }
+        return first.time.toString
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "\(DailyForecastsTableCell.self)", for: indexPath) as? DailyForecastsTableCell else {
+            return UITableViewCell()
+        }
+
+        let forecasts = dailyForecasts[indexPath.section]
+        cell.load(content: forecasts)
+
+        return cell
     }
 }
 
 private extension ViewController {
-    func setupNavbar() {
+    func setupSubviews() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Location", style: .plain, target: self, action: #selector(chooseLocation))
+
+        tableView.rowHeight = 110
+        tableView.separatorInset = .zero
+        tableView.tableFooterView = UIView()
+        tableView.register(DailyForecastsTableCell.self, forCellReuseIdentifier: "\(DailyForecastsTableCell.self)")
     }
 
     @objc func chooseLocation() {
@@ -74,20 +90,25 @@ private extension ViewController {
 
         case .success(let forecasts):
             var date = Date()
-            var dailyForecasts: [String: [Forecast]] = [:]
+            var dailyForecasts: [[Forecast]] = []
             var dayForecast: [Forecast] = []
             for forecast in forecasts {
                 if Calendar.current.isDate(forecast.time, inSameDayAs: date) {
                     dayForecast.append(forecast)
                 } else {
-                    dailyForecasts[date.toString] = dayForecast
+                    if dayForecast.count > 0 {
+                        dailyForecasts.append(dayForecast)
+                    }
                     dayForecast = [forecast]
                     date = forecast.time
                 }
             }
-            dailyForecasts[date.toString] = dayForecast
+            dailyForecasts.append(dayForecast)
             self.dailyForecasts = dailyForecasts
-            self.tableView.reloadData()
+
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
 
@@ -101,7 +122,7 @@ private extension ViewController {
 private extension Date {
     var toString: String {
         let formatter = DateFormatter()
-        formatter.dateStyle = .medium
+        formatter.dateFormat = "dd MMM"
         return formatter.string(from: self)
     }
 }
