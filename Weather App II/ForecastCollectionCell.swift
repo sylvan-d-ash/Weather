@@ -24,12 +24,18 @@ class ForecastCollectionCell: UICollectionViewCell {
 
     func load(content: Forecast) {
         timeLabel.text = content.time.toString
-        tempLabel.text = "\(content.temp)°"
+        tempLabel.text = "\(content.temp.toString)°"
     }
 }
 
 private extension ForecastCollectionCell {
     func setupSubviews() {
+        [timeLabel, tempLabel].forEach {
+            $0.textAlignment = .center
+        }
+
+        backgroundColor = .orange
+
         let stackview = UIStackView(arrangedSubviews: [timeLabel, iconImageView, tempLabel])
         stackview.axis = .vertical
         stackview.spacing = 10
@@ -41,5 +47,20 @@ private extension ForecastCollectionCell {
             stackview.topAnchor.constraint(equalTo: contentView.topAnchor),
             stackview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
+    }
+}
+
+private extension Double {
+    var toString: String {
+        let roundedInt = Int(self.rounded())
+        return "\(roundedInt)"
+    }
+}
+
+private extension Date {
+    var toString: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        return formatter.string(from: self)
     }
 }
