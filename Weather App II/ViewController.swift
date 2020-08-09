@@ -8,10 +8,23 @@
 
 import UIKit
 
+private enum DataSource {
+    case cache, web
+
+    var description: String {
+        switch self {
+            case .cache: return "Cache"
+            case .web: return "Web"
+        }
+    }
+}
+
 class ViewController: UITableViewController {
     private let webService: WebServiceProtocol
     private var location: String?
     private var forecastsByDay: [[Forecast]] = []
+    private var sourceButton: UIBarButtonItem!
+    private var dataSource: DataSource = .web
 
     init(webService: WebServiceProtocol = WebService()) {
         self.webService = webService
@@ -53,6 +66,9 @@ private extension ViewController {
     func setupSubviews() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Location", style: .plain, target: self, action: #selector(chooseLocation))
 
+        sourceButton = UIBarButtonItem(title: "Source: Web", style: .plain, target: self, action: #selector(toggleSource))
+        navigationItem.leftBarButtonItem = sourceButton
+
         tableView.rowHeight = 110
         tableView.separatorInset = .zero
         tableView.tableFooterView = UIView()
@@ -74,9 +90,27 @@ private extension ViewController {
         present(alertController, animated: true, completion: nil)
     }
 
+    @objc func toggleSource() {
+        if dataSource == .web {
+            dataSource = .cache
+        } else {
+            dataSource = .web
+        }
+
+        sourceButton.title = "Source: \(dataSource.description)"
+        fetchForecasts()
+    }
+
     func didSpecifyLocation(_ location: String?) {
         guard let location = location else { return }
         self.location = location
+        fetchForecasts()
+    }
+
+    func fetchForecasts() {
+        guard let location = location else { return }
+        forecastsByDay = []
+        tableView.reloadData()
 
         webService.fetchForecast(location: location) { [weak self] result in
             self?.processForecast(result: result)
