@@ -9,38 +9,6 @@
 import XCTest
 @testable import Weather_App_II
 
-class ViewSpy: ViewProtocol {
-    private(set) var didCallReloadView = false
-    private(set) var didCallShowError = false
-    private(set) var didCallUpdateSource = false
-    private(set) var didCallShowLoading = false
-    private(set) var didCallHideLoading = false
-    private(set) var errorMessage: String?
-    private(set) var sourceButtonTitle: String?
-
-    func reloadView() {
-        didCallReloadView = true
-    }
-
-    func showError(message: String) {
-        didCallShowError = true
-        errorMessage = message
-    }
-
-    func updateSource(title: String) {
-        didCallUpdateSource = true
-        sourceButtonTitle = title
-    }
-
-    func showLoading() {
-        didCallShowLoading = true
-    }
-
-    func hideLoading() {
-        didCallHideLoading = true
-    }
-}
-
 class MVPPresenterTests: XCTestCase {
     var sut: MVPPresenter!
 
