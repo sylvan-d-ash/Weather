@@ -1,5 +1,5 @@
 //
-//  WeatherServiceMock.swift
+//  CacheServiceMock.swift
 //  Weather App IITests
 //
 //  Created by Sylvan Ash on 16/09/2020.
@@ -8,7 +8,7 @@
 
 @testable import Weather_App_II
 
-class WebServiceMock: WebService {
+class CacheServiceMock: CacheService {
     private(set) var didCallFetchForecast = false
     private(set) var location: String?
     var didSucceed = false
