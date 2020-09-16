@@ -15,6 +15,8 @@ class StartViewController: UIViewController {
     }
 
     private func setupSubviews() {
+        view.backgroundColor = .white
+
         let mvcButton = UIButton(type: .system)
         mvcButton.setTitle("MVC Setup", for: .normal)
         mvcButton.addTarget(self, action: #selector(openMVCScene), for: .touchUpInside)

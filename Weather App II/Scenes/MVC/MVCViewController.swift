@@ -65,10 +65,11 @@ class MVCViewController: UITableViewController {
 
 private extension MVCViewController {
     func setupSubviews() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Location", style: .plain, target: self, action: #selector(chooseLocation))
-
         sourceButton = UIBarButtonItem(title: "Source: Web", style: .plain, target: self, action: #selector(toggleSource))
-        navigationItem.leftBarButtonItem = sourceButton
+        navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(title: "Location", style: .plain, target: self, action: #selector(chooseLocation)),
+            sourceButton
+        ]
 
         tableView.rowHeight = 110
         tableView.separatorInset = .zero
