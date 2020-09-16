@@ -13,6 +13,7 @@
 		5E9B01AF2512369C002BD9D9 /* MVPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9B01AE2512369C002BD9D9 /* MVPViewController.swift */; };
 		5E9B01B125123778002BD9D9 /* MVPPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9B01B025123778002BD9D9 /* MVPPresenter.swift */; };
 		5EBA5E5F2512413700867C40 /* MVPPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EBA5E5E2512413700867C40 /* MVPPresenterTests.swift */; };
+		5EBA5E622512437900867C40 /* ViewSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EBA5E612512437900867C40 /* ViewSpy.swift */; };
 		5EEAF53224E097AD000C9E3C /* forecast.json in Resources */ = {isa = PBXBuildFile; fileRef = 5EEAF53124E097AD000C9E3C /* forecast.json */; };
 		5EF467F424E021FD0021D0A9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF467F324E021FD0021D0A9 /* AppDelegate.swift */; };
 		5EF467F624E021FD0021D0A9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF467F524E021FD0021D0A9 /* SceneDelegate.swift */; };
@@ -42,6 +43,7 @@
 		5E9B01AE2512369C002BD9D9 /* MVPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MVPViewController.swift; sourceTree = "<group>"; };
 		5E9B01B025123778002BD9D9 /* MVPPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MVPPresenter.swift; sourceTree = "<group>"; };
 		5EBA5E5E2512413700867C40 /* MVPPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MVPPresenterTests.swift; sourceTree = "<group>"; };
+		5EBA5E612512437900867C40 /* ViewSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewSpy.swift; sourceTree = "<group>"; };
 		5EEAF53124E097AD000C9E3C /* forecast.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = forecast.json; sourceTree = "<group>"; };
 		5EF467F024E021FD0021D0A9 /* Weather App II.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Weather App II.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EF467F324E021FD0021D0A9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 		5EBA5E602512428D00867C40 /* Test Doubles */ = {
 			isa = PBXGroup;
 			children = (
+				5EBA5E612512437900867C40 /* ViewSpy.swift */,
 			);
 			path = "Test Doubles";
 			sourceTree = "<group>";
@@ -318,6 +321,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5EBA5E5F2512413700867C40 /* MVPPresenterTests.swift in Sources */,
+				5EBA5E622512437900867C40 /* ViewSpy.swift in Sources */,
 				5EF4680B24E022050021D0A9 /* Weather_App_IITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
