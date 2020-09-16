@@ -80,6 +80,7 @@ class MVPPresenterTests: XCTestCase {
         XCTAssert(sut.numberOfItems == 0)
 
         XCTAssertTrue(view.didCallShowError)
+        XCTAssertNotNil(view.errorMessage)
     }
 
     func testLocationSpecifiedWithNoDataSource() {
@@ -97,7 +98,7 @@ class MVPPresenterTests: XCTestCase {
         XCTAssertFalse(webService.didCallFetchForecast)
     }
 
-    func testLocationSpecifiedWithWebDataSource() {
+    func testWebServiceSucceeded() {
         webService.didSucceed = true
         sut.viewDidLoad()
         sut.didSpecifyLocation("London")
@@ -110,5 +111,21 @@ class MVPPresenterTests: XCTestCase {
         XCTAssertTrue(view.didCallShowLoading)
         XCTAssertTrue(view.didCallHideLoading)
         XCTAssertTrue(view.didCallReloadView)
+    }
+
+    func testWebServiceFailed() {
+        webService.didSucceed = false
+        sut.viewDidLoad()
+        sut.didSpecifyLocation("London")
+
+        XCTAssertFalse(cacheService.didCallFetchForecast)
+        XCTAssertTrue(webService.didCallFetchForecast)
+        XCTAssert(webService.location == "London")
+        XCTAssert(sut.numberOfItems == 0)
+
+        XCTAssertTrue(view.didCallShowLoading)
+        XCTAssertTrue(view.didCallHideLoading)
+        XCTAssertTrue(view.didCallShowError)
+        XCTAssertNotNil(view.errorMessage)
     }
 }
