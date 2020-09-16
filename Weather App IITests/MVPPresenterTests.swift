@@ -11,13 +11,22 @@ import XCTest
 
 class MVPPresenterTests: XCTestCase {
     var sut: MVPPresenter!
+    var view: ViewSpy!
+    var webService: WebServiceMock!
+    var cacheService: CacheServiceMock!
 
     override func setUpWithError() throws {
-        //
+        view = ViewSpy()
+        webService = WebServiceMock()
+        cacheService = CacheServiceMock()
+        sut = MVPPresenter(view: view, webService: webService, cacheService: cacheService)
     }
 
     override func tearDownWithError() throws {
-        //
+        view = nil
+        webService = nil
+        cacheService = nil
+        sut = nil
     }
 
     func testViewDidLoadUpdatesSourceButtonTitle() {

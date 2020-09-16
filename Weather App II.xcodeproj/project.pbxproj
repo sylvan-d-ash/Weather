@@ -14,7 +14,7 @@
 		5E9B01B125123778002BD9D9 /* MVPPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9B01B025123778002BD9D9 /* MVPPresenter.swift */; };
 		5EBA5E5F2512413700867C40 /* MVPPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EBA5E5E2512413700867C40 /* MVPPresenterTests.swift */; };
 		5EBA5E622512437900867C40 /* ViewSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EBA5E612512437900867C40 /* ViewSpy.swift */; };
-		5EBA5E642512450200867C40 /* WeatherServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EBA5E632512450200867C40 /* WeatherServiceMock.swift */; };
+		5EBA5E642512450200867C40 /* WebServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EBA5E632512450200867C40 /* WebServiceMock.swift */; };
 		5EBA5E662512453400867C40 /* CacheServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EBA5E652512453400867C40 /* CacheServiceMock.swift */; };
 		5EBA5E69251245A600867C40 /* DataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EBA5E68251245A600867C40 /* DataHelper.swift */; };
 		5EEAF53224E097AD000C9E3C /* forecast.json in Resources */ = {isa = PBXBuildFile; fileRef = 5EEAF53124E097AD000C9E3C /* forecast.json */; };
@@ -47,7 +47,7 @@
 		5E9B01B025123778002BD9D9 /* MVPPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MVPPresenter.swift; sourceTree = "<group>"; };
 		5EBA5E5E2512413700867C40 /* MVPPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MVPPresenterTests.swift; sourceTree = "<group>"; };
 		5EBA5E612512437900867C40 /* ViewSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewSpy.swift; sourceTree = "<group>"; };
-		5EBA5E632512450200867C40 /* WeatherServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherServiceMock.swift; sourceTree = "<group>"; };
+		5EBA5E632512450200867C40 /* WebServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceMock.swift; sourceTree = "<group>"; };
 		5EBA5E652512453400867C40 /* CacheServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheServiceMock.swift; sourceTree = "<group>"; };
 		5EBA5E68251245A600867C40 /* DataHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataHelper.swift; sourceTree = "<group>"; };
 		5EEAF53124E097AD000C9E3C /* forecast.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = forecast.json; sourceTree = "<group>"; };
@@ -124,7 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				5EBA5E612512437900867C40 /* ViewSpy.swift */,
-				5EBA5E632512450200867C40 /* WeatherServiceMock.swift */,
+				5EBA5E632512450200867C40 /* WebServiceMock.swift */,
 				5EBA5E652512453400867C40 /* CacheServiceMock.swift */,
 			);
 			path = "Test Doubles";
@@ -184,8 +184,8 @@
 			children = (
 				5EBA5E672512459200867C40 /* Helpers */,
 				5EBA5E602512428D00867C40 /* Test Doubles */,
-				5EF4680A24E022050021D0A9 /* Weather_App_IITests.swift */,
 				5EBA5E5E2512413700867C40 /* MVPPresenterTests.swift */,
+				5EF4680A24E022050021D0A9 /* Weather_App_IITests.swift */,
 				5EF4680C24E022050021D0A9 /* Info.plist */,
 			);
 			path = "Weather App IITests";
@@ -341,7 +341,7 @@
 				5EBA5E622512437900867C40 /* ViewSpy.swift in Sources */,
 				5EBA5E662512453400867C40 /* CacheServiceMock.swift in Sources */,
 				5EBA5E69251245A600867C40 /* DataHelper.swift in Sources */,
-				5EBA5E642512450200867C40 /* WeatherServiceMock.swift in Sources */,
+				5EBA5E642512450200867C40 /* WebServiceMock.swift in Sources */,
 				5EF4680B24E022050021D0A9 /* Weather_App_IITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
