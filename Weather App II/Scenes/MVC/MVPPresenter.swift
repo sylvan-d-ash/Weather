@@ -22,6 +22,10 @@ private enum DataSource {
 protocol PresenterProtocol {
     var numberOfItems: Int { get }
     func viewDidLoad()
+    func didTapSourceButton()
+    func didSpecifyLocation(_ location: String?)
+    func title(for section: Int) -> String?
+    func configure(_ cell: DailyForecastsTableCell, forRowAt index: Int)
 }
 
 class MVPPresenter: PresenterProtocol {
@@ -30,7 +34,7 @@ class MVPPresenter: PresenterProtocol {
     private let cacheService: DataServiceProtocol
     private var dataSource: DataSource? {
         didSet {
-            // TODO: update view
+            view?.updateSource(title: dataSource?.description ?? "")
         }
     }
     private var forecastsByDay: [[Forecast]] = []
@@ -44,5 +48,87 @@ class MVPPresenter: PresenterProtocol {
 
     func viewDidLoad() {
         dataSource = .web
+    }
+
+    func didTapSourceButton() {
+        if dataSource == .web {
+            dataSource = .cache
+        } else {
+            dataSource = .web
+        }
+
+        fetchForecasts(location: nil)
+    }
+
+    func didSpecifyLocation(_ location: String?) {
+        fetchForecasts(location: location)
+    }
+
+    func title(for section: Int) -> String? {
+        let forecasts = forecastsByDay[section]
+        guard let first = forecasts.first else { print("no header"); return nil }
+        return first.time.toString
+    }
+
+    func configure(_ cell: DailyForecastsTableCell, forRowAt index: Int) {
+        let forecasts = forecastsByDay[index]
+        cell.load(content: forecasts)
+    }
+
+    func fetchForecasts(location: String?) {
+        forecastsByDay = []
+        view?.reloadView()
+
+        guard let dataSource = dataSource else { return }
+
+        let dataService: DataServiceProtocol
+        switch dataSource {
+        case .cache:
+            dataService = cacheService
+        case .web:
+            guard let location = location, !location.isEmpty else { return }
+            dataService = webService
+        }
+
+        dataService.fetchForecast(location: location) { [weak self] result in
+            self?.processForecast(result: result)
+        }
+    }
+
+    func processForecast(result: Result<[Forecast], Error>) {
+        switch result {
+        case .failure(let error):
+            view?.showError(message: error.localizedDescription)
+
+        case .success(let allForecasts):
+            var date = Date()
+            var forecasts: [[Forecast]] = []
+            var forecastsForDay: [Forecast] = []
+            for forecast in allForecasts {
+                if Calendar.current.isDate(forecast.time, inSameDayAs: date) {
+                    forecastsForDay.append(forecast)
+                } else {
+                    if forecastsForDay.count > 0 {
+                        forecasts.append(forecastsForDay)
+                    }
+                    forecastsForDay = [forecast]
+                    date = forecast.time
+                }
+            }
+            forecasts.append(forecastsForDay)
+            self.forecastsByDay = forecasts
+
+            DispatchQueue.main.async {
+                self.view?.reloadView()
+            }
+        }
+    }
+}
+
+private extension Date {
+    var toString: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd MMM"
+        return formatter.string(from: self)
     }
 }

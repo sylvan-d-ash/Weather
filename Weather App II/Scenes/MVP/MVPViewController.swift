@@ -9,18 +9,37 @@
 import UIKit
 
 protocol ViewProtocol: AnyObject {
-    //
+    func reloadView()
+    func showError(message: String)
+    func updateSource(title: String)
 }
 
 class MVPViewController: UITableViewController {
     private var sourceButton: UIBarButtonItem!
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    var presenter: PresenterProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return presenter?.numberOfItems ?? 0
+    }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return presenter?.title(for: section)
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "\(DailyForecastsTableCell.self)", for: indexPath) as? DailyForecastsTableCell else {
+            return UITableViewCell()
+        }
+        presenter?.configure(cell, forRowAt: indexPath.row)
+        return cell
     }
 }
 
@@ -43,7 +62,7 @@ private extension MVPViewController {
         alertController.addTextField(configurationHandler: nil)
 
         let addCityAction = UIAlertAction(title: "Done", style: .default) { [weak self] _ in
-            //self?.didSpecifyLocation(alertController.textFields?[0].text)
+            self?.presenter?.didSpecifyLocation(alertController.textFields?[0].text)
         }
         alertController.addAction(addCityAction)
 
@@ -54,17 +73,22 @@ private extension MVPViewController {
     }
 
     @objc func toggleSource() {
-//        if dataSource == .web {
-//            dataSource = .cache
-//        } else {
-//            dataSource = .web
-//        }
-
-//        sourceButton.title = "Source: \(dataSource.description)"
-        //fetchForecasts(location: nil)
+        presenter?.didTapSourceButton()
     }
 }
 
 extension MVPViewController: ViewProtocol {
-    //
+    func reloadView() {
+        tableView.reloadData()
+    }
+
+    func showError(message: String) {
+        let controller = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        controller.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        present(controller, animated: true, completion: nil)
+    }
+
+    func updateSource(title: String) {
+        sourceButton.title = "Source: \(title)"
+    }
 }
