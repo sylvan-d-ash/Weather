@@ -14,6 +14,9 @@ class CacheServiceMock: CacheService {
     var didSucceed = false
 
     override func fetchForecast(location: String?, completion: @escaping (Result<[Forecast], Error>) -> Void) {
+        didCallFetchForecast = true
+        self.location = location
+
         if didSucceed {
             let forecasts = DataHelper.getMockForecasts()
             completion(.success(forecasts))
