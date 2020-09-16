@@ -30,7 +30,9 @@ class MVPPresenterTests: XCTestCase {
     }
 
     func testViewDidLoadUpdatesSourceButtonTitle() {
-        //
+        sut.viewDidLoad()
+        XCTAssert(view.didCallUpdateSource)
+        XCTAssert(view.sourceButtonTitle == "Web")
     }
 
     func testDidTapSourceButtonUpdatesTitle() {
