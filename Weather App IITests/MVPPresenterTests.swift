@@ -32,11 +32,16 @@ class MVPPresenterTests: XCTestCase {
     func testViewDidLoadUpdatesSourceButtonTitle() {
         sut.viewDidLoad()
         XCTAssert(view.didCallUpdateSource)
-        XCTAssert(view.sourceButtonTitle == "Web")
+        XCTAssert(view.sourceButtonTitle == "Web") // TODO: make the DataSource accessible so we can use the 'description' value instead of hard coding the values here
     }
 
     func testDidTapSourceButtonUpdatesTitle() {
-        //
+        sut.didTapSourceButton()
+        XCTAssert(view.didCallUpdateSource)
+        XCTAssert(view.sourceButtonTitle == "Web")
+
+        sut.didTapSourceButton()
+        XCTAssert(view.sourceButtonTitle == "Cache")
     }
 
     func testDidTapSourceButtonUpdatesDataDisplayed() {
