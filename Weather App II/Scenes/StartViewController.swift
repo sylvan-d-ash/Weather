@@ -49,6 +49,10 @@ class StartViewController: UIViewController {
     }
 
     @objc private func openMVPScene() {
-        //
+        let controller = MVPViewController()
+        let presenter = MVPPresenter(view: controller)
+        controller.presenter = presenter
+
+        navigationController?.pushViewController(controller, animated: true)
     }
 }

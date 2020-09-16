@@ -12,14 +12,19 @@ protocol ViewProtocol: AnyObject {
     func reloadView()
     func showError(message: String)
     func updateSource(title: String)
+    func showLoading()
+    func hideLoading()
 }
 
 class MVPViewController: UITableViewController {
-    private var sourceButton: UIBarButtonItem!
     var presenter: PresenterProtocol?
+    private var sourceButton: UIBarButtonItem!
+    private var activityIndicator: UIActivityIndicatorView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupSubviews()
+        presenter?.viewDidLoad()
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -38,7 +43,7 @@ class MVPViewController: UITableViewController {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "\(DailyForecastsTableCell.self)", for: indexPath) as? DailyForecastsTableCell else {
             return UITableViewCell()
         }
-        presenter?.configure(cell, forRowAt: indexPath.row)
+        presenter?.configure(cell, forRowAt: indexPath.section)
         return cell
     }
 }
@@ -90,5 +95,26 @@ extension MVPViewController: ViewProtocol {
 
     func updateSource(title: String) {
         sourceButton.title = "Source: \(title)"
+    }
+
+    func showLoading() {
+        let activityIndicator = UIActivityIndicatorView(style: .medium)
+        view.addSubview(activityIndicator)
+
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        ])
+
+        activityIndicator.startAnimating()
+        self.activityIndicator = activityIndicator
+    }
+
+    func hideLoading() {
+        DispatchQueue.main.async {
+            self.activityIndicator?.stopAnimating()
+            self.activityIndicator?.removeFromSuperview()
+        }
     }
 }

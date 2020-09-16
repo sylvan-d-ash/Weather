@@ -88,7 +88,6 @@
 			isa = PBXGroup;
 			children = (
 				5EF467F724E021FD0021D0A9 /* MVCViewController.swift */,
-				5E9B01B025123778002BD9D9 /* MVPPresenter.swift */,
 			);
 			path = MVC;
 			sourceTree = "<group>";
@@ -97,6 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				5E9B01AE2512369C002BD9D9 /* MVPViewController.swift */,
+				5E9B01B025123778002BD9D9 /* MVPPresenter.swift */,
 			);
 			path = MVP;
 			sourceTree = "<group>";

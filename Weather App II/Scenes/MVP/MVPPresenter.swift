@@ -61,7 +61,7 @@ class MVPPresenter: PresenterProtocol {
     }
 
     func didSpecifyLocation(_ location: String?) {
-        fetchForecasts(location: location)
+        fetchForecasts(location: location, showLoading: true)
     }
 
     func title(for section: Int) -> String? {
@@ -75,7 +75,7 @@ class MVPPresenter: PresenterProtocol {
         cell.load(content: forecasts)
     }
 
-    func fetchForecasts(location: String?) {
+    func fetchForecasts(location: String?, showLoading: Bool = false) {
         forecastsByDay = []
         view?.reloadView()
 
@@ -90,12 +90,18 @@ class MVPPresenter: PresenterProtocol {
             dataService = webService
         }
 
+        if showLoading {
+            view?.showLoading()
+        }
+
         dataService.fetchForecast(location: location) { [weak self] result in
             self?.processForecast(result: result)
         }
     }
 
     func processForecast(result: Result<[Forecast], Error>) {
+        view?.hideLoading()
+
         switch result {
         case .failure(let error):
             view?.showError(message: error.localizedDescription)
