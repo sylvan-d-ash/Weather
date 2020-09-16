@@ -68,4 +68,17 @@ class MVPPresenterTests: XCTestCase {
         XCTAssertTrue(view.didCallReloadView)
         XCTAssertFalse(view.didCallShowLoading)
     }
+
+    func testCacheServiceFailed() {
+        cacheService.didSucceed = false
+        sut.viewDidLoad()
+        sut.didTapSourceButton()
+
+        XCTAssertFalse(webService.didCallFetchForecast)
+        XCTAssertTrue(cacheService.didCallFetchForecast)
+        XCTAssertNil(cacheService.location)
+        XCTAssert(sut.numberOfItems == 0)
+
+        XCTAssertTrue(view.didCallShowError)
+    }
 }
