@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MVCViewController.swift
 //  Weather App II
 //
 //  Created by Sylvan Ash on 09/08/2020.
@@ -19,7 +19,7 @@ private enum DataSource {
     }
 }
 
-class ViewController: UITableViewController {
+class MVCViewController: UITableViewController {
     private let webService: DataServiceProtocol
     private let cacheService: DataServiceProtocol
     private var forecastsByDay: [[Forecast]] = []
@@ -63,12 +63,13 @@ class ViewController: UITableViewController {
     }
 }
 
-private extension ViewController {
+private extension MVCViewController {
     func setupSubviews() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Location", style: .plain, target: self, action: #selector(chooseLocation))
-
         sourceButton = UIBarButtonItem(title: "Source: Web", style: .plain, target: self, action: #selector(toggleSource))
-        navigationItem.leftBarButtonItem = sourceButton
+        navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(title: "Location", style: .plain, target: self, action: #selector(chooseLocation)),
+            sourceButton
+        ]
 
         tableView.rowHeight = 110
         tableView.separatorInset = .zero
